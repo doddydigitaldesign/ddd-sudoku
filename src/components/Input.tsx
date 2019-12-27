@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useState } from "react";
+import React from "react";
 
 interface Props {
   dispatch: any;
@@ -8,8 +8,9 @@ interface Props {
 
 const Input: React.FC<Props> = props => {
   const { dispatch, state, id } = props;
-  const [valid, setValid] = useState<boolean>(false);
-  const onChangeValue = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onChangeValue = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     dispatch({
       type: "CHANGE_VALUE",
       payload: {
@@ -18,32 +19,17 @@ const Input: React.FC<Props> = props => {
     });
   };
 
-  useLayoutEffect(() => {
-    if (![1, 2, 3, 4, 5, 6, 7, 8, 9].includes(state)) {
-      setValid(false);
-    } else {
-      setValid(true);
-    }
-  }, [state]);
-  const element = document.getElementById(id);
-  if (valid === false) {
-    element?.classList.add("invalid");
-  }
-  if (valid === true) {
-    element?.classList.remove("invalid");
-  }
   return (
     <>
-      <label htmlFor={id}>{id}</label>
+      <label htmlFor={id}>#{parseInt(id) + 1}</label>
       <input
         type="number"
         id={id}
         onChange={onChangeValue}
-        // formNoValidate
-        value={state}
+        value={state !== 0 && state}
         min={1}
         max={9}
-        className="input-field validate card-panel hoverable"
+        className="input-field validate center-align"
       />
     </>
   );
